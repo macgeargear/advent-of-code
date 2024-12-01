@@ -1,0 +1,8 @@
+hi:
+    echo "Hi there!"
+
+test day part:
+    cargo test --bin {{day}}_{{part}}
+
+create day:
+    cargo generate --path ./daily-template --name {{day}}
