@@ -49,12 +49,12 @@ fn main() -> Result<(), reqwest::Error> {
     let url = format!(
         "https://adventofcode.com/2024/day/{day}/input"
     );
-    println!("sending to `{}` {:?}", url, session);
+    println!("sending to `{}`", url);
 
     let client = Client::new();
     let input_data = client
         .get(&url)
-        .header(COOKIE, format!("session={:?}", session))
+        .header(COOKIE, format!("session={}", session.unwrap()))
         .send()?
         .text()?;
 
