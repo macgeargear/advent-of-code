@@ -1,32 +1,4 @@
-fn valid_diff(num1: i32, num2: i32, asc: bool) -> bool {
-    let diff: i32;
-    if asc {
-        diff = num2 - num1;
-    } else {
-        diff = num1 - num2;
-    }
-    if diff < 1 || diff > 3 {
-        false
-    } else {
-        true
-    }
-}
-
-fn check(num1: i32, num2: i32, asc: bool) -> bool {
-    if asc {
-        if num1 > num2 {
-            false
-        } else {
-            valid_diff(num1, num2, asc)
-        }
-    } else {
-        if num1 < num2 {
-            false
-        } else {
-            valid_diff(num1, num2, asc)
-        }
-    }
-}
+use crate::part1::check;
 
 pub fn solve(input: &str) -> i32 {
     let mut cnt = 0;

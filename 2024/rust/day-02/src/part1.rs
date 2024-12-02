@@ -1,31 +1,9 @@
-fn valid_diff(num1: i32, num2: i32, asc: bool) -> bool {
-    let diff: i32;
-    if asc {
-        diff = num2 - num1;
-    } else {
-        diff = num1 - num2;
-    }
-    if diff < 1 || diff > 3 {
-        false
-    } else {
-        true
-    }
-}
+const MIN_DIFF: i32 = 1;
+const MAX_DIFF: i32 = 3;
 
-fn check(num1: i32, num2: i32, asc: bool) -> bool {
-    if asc {
-        if num1 > num2 {
-            false
-        } else {
-            valid_diff(num1, num2, asc)
-        }
-    } else {
-        if num1 < num2 {
-            false
-        } else {
-            valid_diff(num1, num2, asc)
-        }
-    }
+pub fn check(num1: i32, num2: i32, asc: bool) -> bool {
+    let diff = if asc { num2 - num1 } else { num1 - num2 };
+    diff >= MIN_DIFF && diff <= MAX_DIFF
 }
 
 pub fn solve(input: &str) -> i32 {
@@ -35,7 +13,7 @@ pub fn solve(input: &str) -> i32 {
             .split_whitespace()
             .filter_map(|n| n.parse::<i32>().ok())
             .collect();
-        let asc = if nums[0] < nums[1] { true } else { false };
+        let asc = nums[0] < nums[1];
         let mut valid = true;
         for i in 0..nums.len() - 1 {
             if !check(nums[i], nums[i + 1], asc) {
