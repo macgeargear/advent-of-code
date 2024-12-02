@@ -8,47 +8,28 @@ pub fn solve(input: &str) -> i32 {
             .filter_map(|n| n.parse::<i32>().ok())
             .collect();
 
-        let mut valid = true;
         let asc = if nums[0] < nums[1] { true } else { false };
-        for i in 0..nums.len() - 1 {
-            if !check(nums[i], nums[i + 1], asc) {
-                valid = false;
-                break;
-            }
-        }
-
-        if valid {
+        if nums.windows(2).all(|nums| check(nums[0], nums[1], asc)) {
             cnt += 1;
-            continue;
-        }
-
-        for i in 0..nums.len() {
-            let mut valid = true;
-            let filter_nums: Vec<i32> = nums
-                .iter()
-                .enumerate()
-                .filter(|(j, _)| if i == *j { false } else { true })
-                .map(|(_, &num)| num)
-                .collect();
-            let asc = if filter_nums[0] < filter_nums[1] {
-                true
-            } else {
-                false
-            };
-            for j in 0..filter_nums.len() - 1 {
-                if !check(filter_nums[j], filter_nums[j + 1], asc) {
-                    valid = false;
+        } else {
+            for i in 0..nums.len() {
+                let filter_nums: Vec<i32> = nums
+                    .iter()
+                    .enumerate()
+                    .filter(|(j, _)| if i == *j { false } else { true })
+                    .map(|(_, &num)| num)
+                    .collect();
+                let asc = filter_nums[0] < filter_nums[1];
+                if filter_nums
+                    .windows(2)
+                    .all(|nums| check(nums[0], nums[1], asc))
+                {
+                    cnt += 1;
                     break;
                 }
             }
-
-            if valid {
-                cnt += 1;
-                break;
-            }
         }
     }
-
     cnt
 }
 

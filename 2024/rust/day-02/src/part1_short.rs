@@ -1,8 +1,5 @@
 use crate::part1::check;
 
-const MIN_DIFF: i32 = 1;
-const MAX_DIFF: i32 = 3;
-
 pub fn solve(input: &str) -> i32 {
     input
         .lines()
