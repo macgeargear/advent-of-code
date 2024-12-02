@@ -6,6 +6,7 @@ test day part:
 
 create day:
     cargo generate --path ./daily-template --name {{day}}
+    just get-input {{day}}
 
 get-input day:
     ./scripts/get_input.rs --day {{day}} --current-working-dir {{justfile_directory()}}
