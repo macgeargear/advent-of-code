@@ -18,7 +18,7 @@ func main() {
 
 	pflag.Parse()
 
-	dirname := fmt.Sprintf("day%02dp1", *day)
+	dirname := fmt.Sprintf("day%02d", *day)
 
 	if err := os.MkdirAll(dirname, 0755); err != nil {
 		fmt.Fprintf(os.Stderr, "Error creating destination directory %s: %s\n", dirname, err)

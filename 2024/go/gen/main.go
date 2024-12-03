@@ -20,7 +20,8 @@ type DayDirectory struct {
 func newDayDirectory(name string) DayDirectory {
 	res := DayDirectory{Name: name}
 
-	fmt.Sscanf(name, "day%dp%s", &(res.Day), &(res.Part))
+	// fmt.Sscanf(name, "day%dp%s", &(res.Day), &(res.Part))
+	fmt.Sscanf(name, "day%d", &(res.Day))
 
 	return res
 }
@@ -40,6 +41,7 @@ func (a ByName) Less(i, j int) bool {
 
 func main() {
 	files, err := os.ReadDir(".")
+	fmt.Println(files)
 	utils.Check(err, "unable to read directory")
 
 	td := TemplateData{}
@@ -54,7 +56,15 @@ func main() {
 
 			for _, sf := range sub {
 				switch sf.Name() {
-				case "solution.go":
+				case "part1.go":
+					t, err := getModTime(sf)
+					utils.Check(err, "unable to get mod time for %s/%s", f.Name(), sf.Name())
+					if t.After(latest) {
+						latest = t
+						td.CurrentDirectory = newDayDirectory(f.Name())
+					}
+					found = true
+				case "part2.go":
 					t, err := getModTime(sf)
 					utils.Check(err, "unable to get mod time for %s/%s", f.Name(), sf.Name())
 					if t.After(latest) {
@@ -73,7 +83,7 @@ func main() {
 
 	sort.Sort(ByName(td.DayDirectories))
 
-	tpls := template.Must(template.ParseFS(os.DirFS("templates"), "*.tmpl"))
+	tpls := template.Must(template.ParseFS(os.DirFS("daily-template"), "*.tmpl"))
 
 	fout, err := os.Create("run.go")
 	utils.Check(err, "unable to create run.go file")
