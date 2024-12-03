@@ -1,0 +1,29 @@
+package day{{ printf "%02d" . }}
+
+import (
+	"strings"
+	"testing"
+
+	"github.com/macgeargear/advent-of-code-go/utils"
+)
+
+var testInput2 = `TEST INPUT GOES HERE`
+
+func TestSolvePart2(t *testing.T) {
+	tests := []struct {
+		input  string
+		answer int
+	}{
+		{testInput, 0},
+	}
+
+	for _, test := range tests {
+		r := strings.NewReader(test.input)
+
+		result := SolvePart2(r).(int)
+
+		if result != test.answer {
+			t.Errorf("Expected %d, got %d", test.answer, result)
+		}
+	}
+}
