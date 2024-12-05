@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 pub fn solve(input: &str) -> i32 {
     let mut map: HashMap<i32, Vec<i32>> = HashMap::new();
-    let mut page_oders: Vec<Vec<i32>> = Vec::new();
+    let mut page_orders: Vec<Vec<i32>> = Vec::new();
     let mut empty_line = false;
 
     for line in input.lines().map(str::trim) {
@@ -15,14 +15,14 @@ pub fn solve(input: &str) -> i32 {
         let parsed_line: Vec<i32> = line.split(sep).map(|x| x.parse::<i32>().unwrap()).collect();
 
         if empty_line {
-            page_oders.push(parsed_line);
+            page_orders.push(parsed_line);
         } else {
             let (l, r) = parsed_line.split_first().unwrap();
             map.entry(*l).or_insert_with(Vec::new).extend(r);
         }
     }
 
-    let total: i32 = page_oders
+    let total: i32 = page_orders
         .into_iter()
         .filter_map(|order| {
             if order.windows(2).all(|nums| {
