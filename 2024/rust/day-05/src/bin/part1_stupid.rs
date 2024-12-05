@@ -1,4 +1,4 @@
-use day_05::part1::solve;
+use day_05::part1_stupid::solve;
 
 fn main() {
     let input = include_str!("../../input1.txt");

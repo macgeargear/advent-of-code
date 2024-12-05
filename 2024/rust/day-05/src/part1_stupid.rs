@@ -22,6 +22,8 @@ pub fn solve(input: &str) -> i32 {
         }
     }
 
+    println!("{:#?}", map);
+
     let total: i32 = page_orders
         .into_iter()
         .filter_map(|order| {
