@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 fn parse_input(input: &str) -> Vec<(i64, Vec<i64>)> {
     input
         .lines()
@@ -15,21 +17,16 @@ fn parse_input(input: &str) -> Vec<(i64, Vec<i64>)> {
         .collect()
 }
 
-pub fn solve(input: &str) -> i64 {
-    let lines = parse_input(input);
-    let mut total: i64 = 0;
-
-    for (key, values) in lines.iter() {
-        println!("{}: {:?}", key, values);
-        if dfs(1, values[0], *key, values) {
-            total += key;
-        }
+fn dfs(
+    i: usize,
+    cur: i64,
+    target: i64,
+    nums: &Vec<i64>,
+    memo: &mut HashMap<(usize, i64), bool>,
+) -> bool {
+    if memo.contains_key(&(i, cur)) {
+        return *memo.get(&(i, cur)).unwrap();
     }
-
-    total
-}
-
-fn dfs(i: usize, cur: i64, target: i64, nums: &Vec<i64>) -> bool {
     if i == nums.len() {
         if cur == target {
             return true;
@@ -38,10 +35,25 @@ fn dfs(i: usize, cur: i64, target: i64, nums: &Vec<i64>) -> bool {
         }
     }
 
-    let plus = dfs(i + 1, cur + nums[i], target, nums);
-    let mul = dfs(i + 1, cur * nums[i], target, nums);
+    let plus = dfs(i + 1, cur + nums[i], target, nums, memo);
+    let mul = dfs(i + 1, cur * nums[i], target, nums, memo);
 
+    memo.insert((i, cur), plus || mul);
     plus || mul
+}
+pub fn solve(input: &str) -> i64 {
+    let lines = parse_input(input);
+    let mut memo: HashMap<(usize, i64), bool> = HashMap::new();
+    let mut total: i64 = 0;
+
+    for (key, values) in lines.iter() {
+        println!("{}: {:?}", key, values);
+        if dfs(1, values[0], *key, values, &mut memo) {
+            total += key;
+        }
+    }
+
+    total
 }
 
 #[cfg(test)]
