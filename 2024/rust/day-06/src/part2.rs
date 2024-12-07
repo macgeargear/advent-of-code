@@ -15,7 +15,6 @@ fn can_trap(sr: i32, sc: i32, lines: &Vec<String>) -> i32 {
         let (dr, dc) = dirs[idir as usize];
         let (nr, nc) = (r + dr, c + dc);
 
-        println!("{} {} {} {}", nr, nc, row, col);
         if !valid(nr, nc, row, col) || lines[nr as usize].chars().nth(nc as usize).unwrap() == ' ' {
             break;
         }
@@ -55,7 +54,6 @@ pub fn solve(input: &str) -> i32 {
 
             let mut tmp_lines = lines.clone();
             tmp_lines[i].replace_range(j..j + 1, "#");
-            println!("try trap ({}, {})--------------------------------", i, j);
             trap_cnt += can_trap(sr as i32, sc as i32, &tmp_lines);
         }
     }
