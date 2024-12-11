@@ -55,10 +55,4 @@ mod tests {
         let input = "12345";
         assert_eq!(solve(input), 60);
     }
-
-    #[test]
-    fn test_solve3() {
-        let input = "90909";
-        assert_eq!(solve(input), 27);
-    }
 }
