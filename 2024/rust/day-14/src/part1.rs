@@ -1,33 +1,18 @@
-use regex::Regex;
+use crate::{nums, Robot};
 
-#[derive(Debug)]
-struct Robot {
-    px: i32,
-    py: i32,
-    vx: i32,
-    vy: i32,
-}
-
-pub fn solve(input: &str) -> i32 {
-    let re = Regex::new(r"(-?\d+),(-?\d+)\s+v=(-?\d+),(-?\d+)").unwrap();
+pub fn solve(input: &str) -> i64 {
     let lines: Vec<&str> = input.lines().collect();
     let mut robots: Vec<Robot> = vec![];
     for line in lines {
-        let cap = re.captures(line).unwrap();
-        let px: i32 = cap.get(1).unwrap().as_str().parse().unwrap();
-        let py: i32 = cap.get(2).unwrap().as_str().parse().unwrap();
-        let vx: i32 = cap.get(3).unwrap().as_str().parse().unwrap();
-        let vy: i32 = cap.get(4).unwrap().as_str().parse().unwrap();
-        robots.push(Robot { px, py, vx, vy })
+        let line = nums(line);
+        let robot = Robot::new(line[0], line[1], line[2], line[3]);
+        robots.push(robot);
     }
-    let times = 100;
-    let (X, Y) = (101, 103);
     let mut q = (0, 0, 0, 0);
 
-    for _ in 0..times {
+    for _ in 0..100 {
         for robot in robots.iter_mut() {
-            robot.px = (robot.px + 101 + robot.vx) % X;
-            robot.py = (robot.py + 103 + robot.vy) % Y;
+            robot.update();
         }
     }
 
@@ -35,17 +20,12 @@ pub fn solve(input: &str) -> i32 {
         if robot.px == 50 || robot.py == 51 {
             continue;
         }
-        if robot.px > 50 && robot.py > 51 {
-            q.0 += 1;
-        }
-        if robot.px > 50 && robot.py < 51 {
-            q.1 += 1;
-        }
-        if robot.px < 50 && robot.py > 51 {
-            q.2 += 1;
-        }
-        if robot.px < 50 && robot.py < 51 {
-            q.3 += 1;
+        match robot.quadrant() {
+            0 => q.0 += 1,
+            1 => q.1 += 1,
+            2 => q.2 += 1,
+            3 => q.3 += 1,
+            _ => (),
         }
     }
 
